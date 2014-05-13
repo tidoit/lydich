@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import codecs
+import random
 tenque = [[],[],[],[],[],[],[],[]]
 que = [[],[],[],[],[],[],[],[]]
 #Nhap 64 que
@@ -24,7 +25,13 @@ with codecs.open('64que.csv', encoding='utf-8') as f64que:
 #   0       4         2       6        1       5       3        7
 indexBinary='73516240'
 execfile('amlich.py')
-def timChanhTuong(hour,day,month,year):    
+def timChanhTuongTheoBocBai(tayTrai,tayPhai):
+	soLyTienTuong=(tayTrai+7)%8
+	soLyHauTuong=(tayPhai+7)%8
+	haoDong=(tayTrai+tayPhai+5)%6
+	return soLyTienTuong, soLyHauTuong, haoDong
+	
+def timChanhTuongTheoNgay(hour,day,month,year):    
     ngayam=S2L(day,month,year)
     gioam=hour/2+hour%2+1
     #chuyen nam am ra so
@@ -77,19 +84,64 @@ def timChanhBienTuong(chanhTuong,bienTuong):
         return chanhTuong[0],bienTuong[0]
     
 #Chuong trinh chinh
-hour=int(raw_input('Giờ: '))
-day=int(raw_input('Ngày: '))
-month=int(raw_input('Tháng: '))
-year=int(raw_input('Năm: '))
-chanhTuong=[0,0,0]
-bienTuong=[0,0]
-hoTuong=[0,0]
-chanhBienTuong=[0,0]
+def layQueTheoNgay():
+	hour=int(raw_input('Giờ: '))
+	day=int(raw_input('Ngày: '))
+	month=int(raw_input('Tháng: '))
+	year=int(raw_input('Năm: '))
+	chanhTuong=[0,0,0]
+	bienTuong=[0,0]
+	hoTuong=[0,0]
+	chanhBienTuong=[0,0]
 
-chanhTuong=timChanhTuong(hour,day,month,year)
-hoTuong=timHoTuong(chanhTuong[0],chanhTuong[1])
-bienTuong=timBienTuong(chanhTuong[0],chanhTuong[1],chanhTuong[2])
-chanhBienTuong=timChanhBienTuong(chanhTuong,bienTuong)
+	chanhTuong=timChanhTuongTheoNgay(hour,day,month,year)
+	hoTuong=timHoTuong(chanhTuong[0],chanhTuong[1])
+	bienTuong=timBienTuong(chanhTuong[0],chanhTuong[1],chanhTuong[2])
+	chanhBienTuong=timChanhBienTuong(chanhTuong,bienTuong)
 
-print que[chanhTuong[0]][chanhTuong[1]]+"            "+que[hoTuong[0]][hoTuong[1]]+"            "+que[bienTuong[0]][bienTuong[1]]+"            "+que[chanhBienTuong[0]][chanhBienTuong[1]]
-print tenque[chanhTuong[0]][chanhTuong[1]]+"  "+tenque[hoTuong[0]][hoTuong[1]]+"  "+tenque[bienTuong[0]][bienTuong[1]]+"  "+tenque[chanhBienTuong[0]][chanhBienTuong[1]]
+	print que[chanhTuong[0]][chanhTuong[1]]+"            "+que[hoTuong[0]][hoTuong[1]]+"            "+que[bienTuong[0]][bienTuong[1]]+"            "+que[chanhBienTuong[0]][chanhBienTuong[1]]
+	print tenque[chanhTuong[0]][chanhTuong[1]]+"  "+tenque[hoTuong[0]][hoTuong[1]]+"  "+tenque[bienTuong[0]][bienTuong[1]]+"  "+tenque[chanhBienTuong[0]][chanhBienTuong[1]]
+
+def bocBai():
+	laBai = random.choice( ('A','2','3','4','5','6','7','8','9','10','J','Q','K','A','2','3','4','5','6','7','8','9','10','J','Q','K','A','2','3','4','5','6','7','8','9','10','J','Q','K','A','2','3','4','5','6','7','8','9','10','J','Q','K') )
+	if laBai in ['A','J','Q','K']:
+		return 1
+	else: return int(laBai)
+	
+def layQueTheoBocBai():
+	laBaiTayTrai = bocBai()
+	laBaiTayPhai = bocBai()
+	chanhTuong=timChanhTuongTheoBocBai(laBaiTayTrai,laBaiTayPhai)
+	hoTuong=timHoTuong(chanhTuong[0],chanhTuong[1])
+	bienTuong=timBienTuong(chanhTuong[0],chanhTuong[1],chanhTuong[2])
+	chanhBienTuong=timChanhBienTuong(chanhTuong,bienTuong)
+
+	print que[chanhTuong[0]][chanhTuong[1]]+"            "+que[hoTuong[0]][hoTuong[1]]+"            "+que[bienTuong[0]][bienTuong[1]]+"            "+que[chanhBienTuong[0]][chanhBienTuong[1]]
+	print tenque[chanhTuong[0]][chanhTuong[1]]+"  "+tenque[hoTuong[0]][hoTuong[1]]+"  "+tenque[bienTuong[0]][bienTuong[1]]+"  "+tenque[chanhBienTuong[0]][chanhBienTuong[1]]
+
+## Chương trình chính
+def layQueTheoSo():
+	try:
+		tienTuong=raw_input('Số đầu: ')
+		hauTuong=raw_input('Số sau: ')
+		chanhTuong=timChanhTuongTheoBocBai(int(tienTuong),int(hauTuong))
+		hoTuong=timHoTuong(chanhTuong[0],chanhTuong[1])
+		bienTuong=timBienTuong(chanhTuong[0],chanhTuong[1],chanhTuong[2])
+		chanhBienTuong=timChanhBienTuong(chanhTuong,bienTuong)
+
+		print que[chanhTuong[0]][chanhTuong[1]]+"            "+que[hoTuong[0]][hoTuong[1]]+"            "+que[bienTuong[0]][bienTuong[1]]+"            "+que[chanhBienTuong[0]][chanhBienTuong[1]]
+		print tenque[chanhTuong[0]][chanhTuong[1]]+"  "+tenque[hoTuong[0]][hoTuong[1]]+"  "+tenque[bienTuong[0]][bienTuong[1]]+"  "+tenque[chanhBienTuong[0]][chanhBienTuong[1]]
+	except:
+		print 'Nhập vào số tự nhiên dương!'
+	
+while True:
+	chonLua=raw_input('Lấy quẻ \ntheo ngày gõ n, \ntheo bốc bài gõ b, \ntheo số gõ t: ')
+	if chonLua=='n':
+		layQueTheoNgay()
+	elif chonLua=='b':
+		layQueTheoBocBai()
+	elif chonLua=='t':
+		layQueTheoSo()
+	else:
+		print "Chọn cho đúng!"
+		break	
